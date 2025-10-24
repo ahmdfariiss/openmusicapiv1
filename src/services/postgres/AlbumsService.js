@@ -4,14 +4,13 @@ const InvariantError = require("../../exceptions/InvariantError");
 const NotFoundError = require("../../exceptions/NotFoundError");
 const { mapDBToAlbumModel, mapDBToSongListModel } = require("../../utils");
 
-class AlbumService {
+class AlbumsService {
   constructor() {
     this._pool = new Pool();
   }
 
-  // add album
   async addAlbum({ name, year }) {
-    const id = `albums-${nanoId(16)}`;
+    const id = `album-${nanoid(16)}`;
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
 
@@ -23,14 +22,13 @@ class AlbumService {
     const result = await this._pool.query(query);
 
     if (!result.rows[0].id) {
-      throw new InvariantError("Album Gagal Ditambahkan");
+      throw new InvariantError("Album gagal ditambahkan");
     }
 
     return result.rows[0].id;
   }
 
-  // get album by id
-  async getAlbumById({ id }) {
+  async getAlbumById(id) {
     const query = {
       text: "SELECT * FROM albums WHERE id = $1",
       values: [id],
@@ -44,19 +42,18 @@ class AlbumService {
 
     const album = mapDBToAlbumModel(result.rows[0]);
 
-    // get song in this album
-    const songQuery = {
-      text: "SELECt id, title, performer FROM songs WHERE album_id = $1",
+    // Get songs in this album (Kriteria Opsional 1)
+    const songsQuery = {
+      text: "SELECT id, title, performer FROM songs WHERE album_id = $1",
       values: [id],
     };
 
-    const songResult = await this._pool.query(songQuery);
-    album.songs = songResult.rows.map(mapDBToSongListModel);
+    const songsResult = await this._pool.query(songsQuery);
+    album.songs = songsResult.rows.map(mapDBToSongListModel);
 
     return album;
   }
 
-  // edit alkbum by id
   async editAlbumById(id, { name, year }) {
     const updatedAt = new Date().toISOString();
 
@@ -72,7 +69,6 @@ class AlbumService {
     }
   }
 
-  // delete album by id
   async deleteAlbumById(id) {
     const query = {
       text: "DELETE FROM albums WHERE id = $1 RETURNING id",
@@ -87,4 +83,4 @@ class AlbumService {
   }
 }
 
-module.exports = AlbumService;
+module.exports = AlbumsService;

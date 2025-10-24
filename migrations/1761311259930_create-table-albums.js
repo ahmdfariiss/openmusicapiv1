@@ -30,7 +30,7 @@ export const up = (pgm) => {
     updated_at: {
       type: "TIMESTAMP",
       notNull: true,
-      default: pgm.func("currrent_timestamp"),
+      default: pgm.func("current_timestamp"),
     },
   });
 };

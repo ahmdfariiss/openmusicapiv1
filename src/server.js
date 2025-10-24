@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 
+const ClientError = require("./exceptions/ClientError");
+
 // Services
 const AlbumsService = require("./services/postgres/AlbumsService");
 const SongsService = require("./services/postgres/SongsService");
@@ -42,7 +44,7 @@ const init = async () => {
     });
   });
 
-  // 404 Handler
+  // 404 Handler - harus SEBELUM error handler
   app.use((req, res) => {
     res.status(404).json({
       status: "fail",
@@ -51,8 +53,17 @@ const init = async () => {
   });
 
   app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
+    // Cek apakah error adalah ClientError (400, 404, dll)
+    if (err instanceof ClientError) {
+      return res.status(err.statusCode).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+
+    // Jika bukan ClientError, maka Server Error (500)
+    console.error("Server Error:", err);
+    return res.status(500).json({
       status: "error",
       message: "Maaf, terjadi kegagalan pada server kami.",
     });

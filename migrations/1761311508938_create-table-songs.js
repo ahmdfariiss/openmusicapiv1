@@ -11,7 +11,7 @@ export const shorthands = undefined;
 export const up = (pgm) => {
   pgm.createTable("songs", {
     id: {
-      type: "VARCHAR",
+      type: "VARCHAR(50)",
       primaryKey: true,
     },
     title: {
@@ -22,33 +22,20 @@ export const up = (pgm) => {
       type: "INTEGER",
       notNull: true,
     },
-    genre: {
-      type: "TEXT",
-      notNull: true,
-    },
     performer: {
       type: "TEXT",
       notNull: true,
     },
+    genre: {
+      type: "TEXT",
+    },
     duration: {
       type: "INTEGER",
-      notNull: true,
     },
     album_id: {
       type: "VARCHAR(50)",
-      notNull: false,
-      references: album(id),
+      references: '"albums"(id)',
       onDelete: "CASCADE",
-    },
-    created_at: {
-      type: "TIMESTAMP",
-      notNull: true,
-      default: pgm.func("currrent_timestamp"),
-    },
-    updated_at: {
-      type: "TIMESTAAMP",
-      notNull: true,
-      default: pgm.func("currrent_timestamp"),
     },
   });
 };
