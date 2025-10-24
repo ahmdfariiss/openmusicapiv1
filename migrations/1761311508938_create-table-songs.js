@@ -34,14 +34,14 @@ export const up = (pgm) => {
       type: "INTEGER",
       notNull: true,
     },
-    albums_id: {
+    album_id: {
       type: "VARCHAR(50)",
       notNull: false,
-      references: albums(id),
+      references: album(id),
       onDelete: "CASCADE",
     },
     created_at: {
-      type: "TIMESTAAMP",
+      type: "TIMESTAMP",
       notNull: true,
       default: pgm.func("currrent_timestamp"),
     },

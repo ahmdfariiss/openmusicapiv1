@@ -1,7 +1,7 @@
 const { AlbumPayloadSchema } = require("./schema");
 
 const AlbumValidator = {
-  valdiateAlbumPayload: (payload) => {
+  validateAlbumPayload: (payload) => {
     AlbumPayloadSchema.validate(payload);
   },
 };

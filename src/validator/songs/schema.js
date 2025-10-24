@@ -1,7 +1,7 @@
 const InvariantError = require("../../exceptions/InvariantError");
 
 const SongPayloadSchema = {
-  valdiate: (payload) => {
+  validate: (payload) => {
     const { title, genre, year, performer, duration, albumId } = payload;
 
     // Validasi Judul
@@ -64,4 +64,4 @@ const SongPayloadSchema = {
   },
 };
 
-module.EXPORTS = { SongPayloadSchema };
+module.exports = { SongPayloadSchema };

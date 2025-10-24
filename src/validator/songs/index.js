@@ -1,7 +1,7 @@
 const { SongPayloadSchema } = require("./schema");
 
 const SongValidator = {
-  validatorSongpayload: (payload) => {
+  validateSongPayload: (payload) => {
     SongPayloadSchema.validate(payload);
   },
 };

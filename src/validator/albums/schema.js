@@ -11,6 +11,12 @@ const AlbumPayloadSchema = {
     }
 
     // Validasi Tahun
+    if (!year || typeof year !== "number") {
+      throw new InvariantError(
+        "Gagal menambahkan album. Mohon isi tahun album dengan benar"
+      );
+    }
+
     if (year < 1900 || year > new Date().getFullYear() + 1) {
       throw new InvariantError("Tahun album tidak valid");
     }

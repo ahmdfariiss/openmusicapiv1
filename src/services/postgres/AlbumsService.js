@@ -1,9 +1,8 @@
 const { Pool } = require("pg");
-const { nanoId } = require("nanoid");
+const { nanoid } = require("nanoid");
 const InvariantError = require("../../exceptions/InvariantError");
 const NotFoundError = require("../../exceptions/NotFoundError");
 const { mapDBToAlbumModel, mapDBToSongListModel } = require("../../utils");
-const { text } = require("express");
 
 class AlbumService {
   constructor() {
@@ -31,7 +30,7 @@ class AlbumService {
   }
 
   // get album by id
-  async getAlbumByid({ id }) {
+  async getAlbumById({ id }) {
     const query = {
       text: "SELECT * FROM albums WHERE id = $1",
       values: [id],
