@@ -6,14 +6,26 @@ const ClientError = require("./exceptions/ClientError");
 // Services
 const AlbumsService = require("./services/postgres/AlbumsService");
 const SongsService = require("./services/postgres/SongsService");
+const UsersService = require("./services/postgres/UsersService");
+const AuthenticationsService = require("./services/postgres/AuthenticationsService");
+const CollaborationsService = require("./services/postgres/CollaborationsService");
+const PlaylistsService = require("./services/postgres/PlaylistsService");
 
 // Validators
 const AlbumsValidator = require("./validator/albums");
 const SongsValidator = require("./validator/songs");
+const UsersValidator = require("./validator/users");
+const AuthenticationsValidator = require("./validator/authentications");
+const PlaylistsValidator = require("./validator/playlists");
+const CollaborationsValidator = require("./validator/collaborations");
 
 // API Plugins
 const albums = require("./api/albums");
 const songs = require("./api/songs");
+const users = require("./api/users");
+const authentications = require("./api/authentications");
+const playlists = require("./api/playlists");
+const collaborations = require("./api/collaborations");
 
 const init = async () => {
   const app = express();
@@ -24,6 +36,10 @@ const init = async () => {
   // Inisialisasi services
   const albumsService = new AlbumsService();
   const songsService = new SongsService();
+  const usersService = new UsersService();
+  const authenticationsService = new AuthenticationsService();
+  const collaborationsService = new CollaborationsService();
+  const playlistsService = new PlaylistsService(collaborationsService);
 
   // Register API Routes
   albums.register(app, {
@@ -36,10 +52,34 @@ const init = async () => {
     validator: SongsValidator,
   });
 
+  users.register(app, {
+    service: usersService,
+    validator: UsersValidator,
+  });
+
+  authentications.register(app, {
+    authenticationsService,
+    usersService,
+    validator: AuthenticationsValidator,
+  });
+
+  playlists.register(app, {
+    playlistsService,
+    songsService,
+    validator: PlaylistsValidator,
+  });
+
+  collaborations.register(app, {
+    collaborationsService,
+    playlistsService,
+    usersService,
+    validator: CollaborationsValidator,
+  });
+
   // Root endpoint
   app.get("/", (req, res) => {
     res.json({
-      message: "OpenMusic API v1.0.0",
+      message: "OpenMusic API v2.0.0",
       status: "running",
     });
   });

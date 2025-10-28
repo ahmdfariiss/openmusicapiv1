@@ -1,7 +1,7 @@
 {
   "name": "openmusic-api",
-  "version": "1.0.0",
-  "description": "OpenMusic API - Music Album and Song Management",
+  "version": "2.0.0",
+  "description": "OpenMusic API v2 - Music Album, Song Management with User Authentication and Playlist Management",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -17,14 +17,17 @@
   "author": "Your Name",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "pg": "^8.11.3",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
-    "nanoid": "^3.3.7"
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^3.3.7",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1",
     "eslint": "^8.52.0",
-    "node-pg-migrate": "^6.2.2"
+    "node-pg-migrate": "^6.2.2",
+    "nodemon": "^3.0.1"
   }
 }
